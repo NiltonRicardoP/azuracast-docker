@@ -1,17 +1,18 @@
 FROM ghcr.io/azuracast/azuracast:stable
 
-ENV INIT_REPO=false \
-    AZURACAST_DC_MODE=true \
-    AZURACAST_STANDALONE=true \
-    DB_IS_SQLITE=true \
-    SUPERVISOR_HTTP=false \
-    CACHE_DRIVER=redis \
-    SESSION_DRIVER=redis \
-    PORT=10000 \
+ENV PORT=10000 \
     WEB_PORT=10000 \
     AZURACAST_HTTP_PORT=10000 \
-    MARIADB_ROOT_PASSWORD=azura_root_pass
+    INIT_REPO=false \
+    AZURACAST_DC_MODE=true \
+    AZURACAST_STANDALONE=true \
+    SUPERVISOR_HTTP=false \
+    DB_IS_SQLITE=true \
+    CACHE_DRIVER=redis \
+    SESSION_DRIVER=redis
 
+# Expor a porta esperada
 EXPOSE 10000
 
+# Comando de inicialização
 CMD ["/usr/local/bin/my_init"]
