@@ -16,7 +16,6 @@ ENV INIT_REPO=false \
     WEB_PORT=80 \
     NGINX_LISTEN=0.0.0.0
 
-# Substitui a configuração padrão do Nginx
 COPY nginx_custom.conf /etc/nginx/sites-enabled/default
 
 EXPOSE 80
