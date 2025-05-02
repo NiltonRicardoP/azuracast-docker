@@ -17,13 +17,16 @@ ENV INIT_REPO=false \
     WEB_PORT=10000 \
     AZURACAST_HTTP_PORT=10000
 
-# Corrige Nginx para escutar na porta correta da Render
+# Força o Nginx a escutar corretamente na porta da Render
 RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:10000;/g' /etc/nginx/sites-available/azuracast.conf || true
 
-# Remove link simbólico duplicado que causa erro
+# Remove link simbólico duplicado
 RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
 
-# Exponha a porta que o Render espera
+# REMOVE configurações inválidas do MariaDB (evita erro de 'no group')
+RUN rm -f /etc/mysql/conf.d/network.cnf || true
+
+# Expõe a porta certa
 EXPOSE 10000
 
 CMD ["/usr/local/bin/my_init"]
