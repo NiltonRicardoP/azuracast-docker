@@ -8,12 +8,10 @@ ENV PORT=10000 \
     AZURACAST_STANDALONE=true \
     SUPERVISOR_HTTP=false \
     DB_IS_SQLITE=true \
-    CACHE_DRIVER=file \
-    SESSION_DRIVER=file
+    CACHE_DRIVER=redis \
+    SESSION_DRIVER=redis
 
-# Expõe a porta correta para o Railway detectar
 EXPOSE 10000
 
-# Railway precisa que o processo principal rode em primeiro plano
-# my_init executa supervisord, mas Railway precisa da porta escutada imediatamente.
-CMD ["/usr/local/bin/my_init", "--foreground"]
+CMD ["/usr/local/bin/my_init"]
+
