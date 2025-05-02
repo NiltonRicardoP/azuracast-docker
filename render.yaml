@@ -6,4 +6,6 @@ services:
     autoDeploy: true
     envVars:
       - key: PORT
-        value: 80
+        value: 2020
+    ports:
+      - 2020:80
