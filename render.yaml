@@ -7,5 +7,3 @@ services:
     envVars:
       - key: PORT
         value: 10000
-    ports:
-      - 80:80
