@@ -6,6 +6,6 @@ services:
     autoDeploy: true
     envVars:
       - key: PORT
-        value: 80
+        value: 10000
     ports:
       - 80:80
