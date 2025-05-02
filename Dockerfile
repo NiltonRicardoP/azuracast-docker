@@ -12,5 +12,3 @@ ENV INIT_REPO=false \
     WEB_PORT=80
 
 EXPOSE 80
-
-CMD ["/usr/local/bin/docker-entrypoint.sh"]
