@@ -8,20 +8,16 @@ ENV INIT_REPO=false \
     REDIS_HOST=localhost \
     CACHE_DRIVER=redis \
     SESSION_DRIVER=redis \
-    WEB_PORT=80 \
     MYSQL_HOST=localhost \
     MYSQL_PORT=3306 \
     MYSQL_USER=azuracast \
     MYSQL_PASSWORD=azuracast \
-    MYSQL_DATABASE=azuracast
+    MYSQL_DATABASE=azuracast \
+    WEB_PORT=${PORT:-10000}
 
-# Corrige o nginx para aceitar conexões externas
-RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-available/azuracast.conf || true
-
-# Remove link simbólico que pode dar conflito
+# Remove link conflitante do nginx
 RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
 
-EXPOSE 80
+EXPOSE 10000
 
-# Libera a porta 80 antes de iniciar o supervisord
-CMD fuser -k 80/tcp || true && /usr/local/bin/my_init
+CMD fuser -k ${PORT:-10000}/tcp || true && /usr/local/bin/my_init
