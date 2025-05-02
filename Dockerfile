@@ -14,13 +14,10 @@ ENV INIT_REPO=false \
     MYSQL_PASSWORD=azuracast \
     MYSQL_DATABASE=azuracast \
     PORT=10000 \
-    WEB_PORT=10000 \
-    AZURACAST_HTTP_PORT=10000
+    AZURACAST_HTTP_PORT=10000 \
+    WEB_PORT=10000
 
-# Copia o script de entrada
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
+# Expondo explicitamente a porta correta para Render detectar
 EXPOSE 10000
 
-CMD ["/entrypoint.sh"]
+CMD ["/usr/local/bin/my_init"]
