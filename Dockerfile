@@ -13,7 +13,8 @@ ENV INIT_REPO=false \
     REDIS_HOST=localhost \
     CACHE_DRIVER=redis \
     SESSION_DRIVER=redis \
-    WEB_PORT=80
+    WEB_PORT=80 \
+    NGINX_LISTEN=0.0.0.0
 
 EXPOSE 80
 
