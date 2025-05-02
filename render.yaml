@@ -3,4 +3,8 @@ services:
     name: azuracast
     env: docker
     plan: free
-    autoDeploy: false
+    region: oregon
+    branch: main
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: true
