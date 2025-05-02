@@ -14,7 +14,9 @@ ENV INIT_REPO=false \
     MYSQL_PASSWORD=azuracast \
     MYSQL_DATABASE=azuracast
 
-# Garante que o Nginx escute fora do localhost
+# Corrige o nginx para aceitar conexões de fora
 RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-available/azuracast.conf || true
 
 EXPOSE 80
+
+CMD ["/usr/local/bin/my_init"]
