@@ -15,13 +15,11 @@ ENV INIT_REPO=false \
     MYSQL_PASSWORD=azuracast \
     MYSQL_DATABASE=azuracast
 
+# Corrige o nginx para aceitar conexões externas
 RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-available/azuracast.conf || true
 
-# Remover symlink duplicado que pode causar erro
+# Remove possível link simbólico duplicado
 RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
-
-# Força configuração correta do MariaDB
-RUN echo -e "[mysqld]\nport=3306\nbind-address=127.0.0.1" > /etc/mysql/conf.d/network.cnf
 
 EXPOSE 80
 
