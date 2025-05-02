@@ -12,7 +12,8 @@ ENV INIT_REPO=false \
     MYSQL_PASSWORD=disabled \
     REDIS_HOST=localhost \
     CACHE_DRIVER=redis \
-    SESSION_DRIVER=redis
+    SESSION_DRIVER=redis \
+    WEB_PORT=80
 
 EXPOSE 80
 
