@@ -1,0 +1,10 @@
+{
+  "build": {
+    "env": {
+      "PORT": "10000"
+    }
+  },
+  "deploy": {
+    "startCommand": "/usr/local/bin/my_init"
+  }
+}
