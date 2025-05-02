@@ -1,6 +1,6 @@
 FROM ghcr.io/azuracast/azuracast:stable
 
-# Variáveis de ambiente essenciais para modo standalone + SQLite
+# Variáveis de ambiente
 ENV INIT_REPO=false \
     AZURACAST_DC_MODE=true \
     AZURACAST_STANDALONE=true \
@@ -13,36 +13,36 @@ ENV INIT_REPO=false \
     AZURACAST_HTTP_PORT=10000 \
     MARIADB_ROOT_PASSWORD=azura_root_pass
 
-# Remove configurações e arquivos de MySQL
-RUN rm -rf /etc/mysql /var/lib/mysql || true
+# Garante que a pasta exista antes de gerar o config do Nginx
+RUN mkdir -p /etc/nginx/sites-available
 
-# Recria o arquivo de configuração do nginx
-RUN mkdir -p /etc/nginx/sites-available && \
-    cat <<EOF > /etc/nginx/sites-available/azuracast.conf
-server {
-    listen 0.0.0.0:10000;
-    root /var/azuracast/www;
-    index index.php index.html;
+# Cria manualmente a config do Nginx com porta dinâmica
+RUN bash -c 'echo "server {\n\
+    listen 0.0.0.0:${PORT};\n\
+    root /var/azuracast/www;\n\
+    index index.php index.html;\n\
+    location / {\n\
+        try_files \$uri \$uri/ /index.php?\$query_string;\n\
+    }\n\
+    location ~ \.php$ {\n\
+        include fastcgi_params;\n\
+        fastcgi_pass 127.0.0.1:9000;\n\
+        fastcgi_index index.php;\n\
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;\n\
+    }\n\
+}" > /etc/nginx/sites-available/azuracast.conf'
 
-    location / {
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
+# Ativa o novo virtual host
+RUN ln -sf /etc/nginx/sites-available/azuracast.conf /etc/nginx/sites-enabled/azuracast.conf
 
-    location ~ \.php\$ {
-        include fastcgi_params;
-        fastcgi_pass 127.0.0.1:9000;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-    }
-}
-EOF
+# Remove host default para evitar conflito
+RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
 
-# Ativa o virtual host do nginx e remove o padrão
-RUN ln -sf /etc/nginx/sites-available/azuracast.conf /etc/nginx/sites-enabled/azuracast.conf && \
-    rm -f /etc/nginx/sites-enabled/default.vhost || true
+# Remove configuração de MySQL que não será usada
+RUN rm -f /etc/mysql/conf.d/network.cnf || true
 
-# Expõe a porta que o Render vai detectar
+# Expõe a porta esperada
 EXPOSE 10000
 
-# Comando de inicialização padrão
+# Comando padrão de inicialização
 CMD ["/usr/local/bin/my_init"]
