@@ -15,15 +15,15 @@ ENV INIT_REPO=false \
     MYSQL_PASSWORD=azuracast \
     MYSQL_DATABASE=azuracast
 
-# Corrige o nginx para aceitar conexões externas
+# Corrige nginx para escutar em todas as interfaces
 RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-available/azuracast.conf || true
 
-# Garante que o MariaDB escute na porta TCP (3306)
-RUN sed -i 's/^port\s*=.*/port=3306/' /etc/mysql/my.cnf || true
+# Corrige MariaDB para escutar em TCP/IP (localhost:3306)
+RUN echo -e "[mysqld]\nbind-address=127.0.0.1\nport=3306\n" >> /etc/mysql/my.cnf
 
-# Opcional: executa como o usuário correto para evitar erros de permissão no Render
-# USER azuracast
+# Evita erro de symlink duplicado no NGINX
+RUN rm -f /etc/nginx/sites-enabled/default.vhost
 
 EXPOSE 80
 
-CMD ["/usr/local/bin/my_init"]
+CMD ["/usr/bin/supervisord", "-n"]
