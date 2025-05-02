@@ -16,9 +16,6 @@ ENV INIT_REPO=false \
     MYSQL_PASSWORD=disabled \
     MYSQL_DATABASE=azuracast
 
-# Corrige o Nginx para escutar na porta correta no Render
-RUN sed -i 's/listen 127.0.0.1:80;/listen 80;/g' /etc/nginx/sites-available/default || true
-
 EXPOSE 80
 
 CMD ["/usr/local/bin/docker-entrypoint.sh"]
