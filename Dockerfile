@@ -1,23 +1,7 @@
-FROM ghcr.io/azuracast/azuracast:stable
+FROM nginx:alpine
 
-ENV INIT_REPO=false \
-    AZURACAST_DC_MODE=true \
-    AZURACAST_USE_SQLITE=true \
-    MYSQL_DISABLE=true \
-    SUPERVISOR_HTTP=false \
-    MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes \
-    MYSQL_HOST=disabled \
-    MYSQL_DATABASE=azuracast \
-    MYSQL_USER=disabled \
-    MYSQL_PASSWORD=disabled \
-    REDIS_HOST=localhost \
-    CACHE_DRIVER=redis \
-    SESSION_DRIVER=redis \
-    WEB_PORT=80 \
-    NGINX_LISTEN=0.0.0.0
-
-COPY nginx_custom.conf /etc/nginx/sites-enabled/default
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 
-CMD ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]
