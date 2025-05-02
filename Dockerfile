@@ -18,9 +18,10 @@ ENV INIT_REPO=false \
 # Corrige o nginx para aceitar conexões externas
 RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-available/azuracast.conf || true
 
-# Remove possível link simbólico duplicado
+# Remove link simbólico que pode dar conflito
 RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
 
 EXPOSE 80
 
+# Libera a porta 80 antes de iniciar o supervisord
 CMD fuser -k 80/tcp || true && /usr/local/bin/my_init
