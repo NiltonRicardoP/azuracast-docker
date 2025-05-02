@@ -1,19 +1,18 @@
 FROM ghcr.io/azuracast/azuracast:stable
 
-# Força modo Docker com SQLite e desativa MariaDB
-ENV AZURACAST_DC_MODE=true \
-    INIT_REPO=false \
-    MYSQL_HOST=localhost \
-    MYSQL_PORT=3306 \
-    MYSQL_USER=azuracast \
-    MYSQL_PASSWORD=azuracast \
-    MYSQL_DATABASE=azuracast \
+ENV INIT_REPO=false \
+    AZURACAST_DC_MODE=true \
     AZURACAST_USE_SQLITE=true \
     MYSQL_DISABLE=true \
     SUPERVISOR_HTTP=false \
+    MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes \
+    MYSQL_HOST=disabled \
+    MYSQL_DATABASE=azuracast \
+    MYSQL_USER=disabled \
+    MYSQL_PASSWORD=disabled \
+    REDIS_HOST=localhost \
     CACHE_DRIVER=redis \
-    SESSION_DRIVER=redis \
-    REDIS_HOST=localhost
+    SESSION_DRIVER=redis
 
 EXPOSE 80
 
