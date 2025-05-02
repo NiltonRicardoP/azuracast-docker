@@ -18,5 +18,3 @@ ENV INIT_REPO=false \
 RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-available/azuracast.conf || true
 
 EXPOSE 80
-
-CMD ["/usr/local/bin/docker-entrypoint.sh"]
