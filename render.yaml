@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: azuracast
+    env: docker
+    plan: free
+    autoDeploy: false
