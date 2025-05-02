@@ -22,7 +22,7 @@ RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-availa
 RUN printf "[mysqld]\nport=3306\nbind-address=127.0.0.1\n" | tee /etc/mysql/conf.d/network.cnf > /dev/null
 
 # Evita erro de symlink duplicado do nginx
-RUN rm -f /etc/nginx/sites-enabled/default.vhost
+RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
 
 EXPOSE 80
 
