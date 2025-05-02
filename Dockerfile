@@ -12,12 +12,24 @@ ENV INIT_REPO=false \
     MYSQL_PORT=3306 \
     MYSQL_USER=azuracast \
     MYSQL_PASSWORD=azuracast \
-    MYSQL_DATABASE=azuracast \
-    WEB_PORT=${PORT:-10000}
+    MYSQL_DATABASE=azuracast
 
-# Remove link conflitante do nginx
+# Garante que o AzuraCast escute na porta correta da Render
+ENV PORT=10000 \
+    WEB_PORT=10000 \
+    AZURACAST_HTTP_PORT=10000
+
+# Corrige Nginx para escutar na porta do Render (0.0.0.0:$PORT)
+RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:${PORT};/g' /etc/nginx/sites-available/azuracast.conf || true
+
+# Corrige conflitos de link simbólico duplicado
 RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
 
+# Evita que o MySQL configure porta errada
+RUN echo -e "[mysqld]\nport=3306\nbind-address=127.0.0.1" > /etc/mysql/conf.d/network.cnf
+
+# Expõe a porta correta
 EXPOSE 10000
 
-CMD fuser -k ${PORT:-10000}/tcp || true && /usr/local/bin/my_init
+# Executa normalmente
+CMD ["/usr/local/bin/my_init"]
