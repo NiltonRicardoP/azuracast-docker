@@ -3,8 +3,7 @@ services:
     name: azuracast
     env: docker
     plan: free
-    region: oregon
-    branch: main
-    dockerfilePath: ./Dockerfile
-    healthCheckPath: /
     autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 80
