@@ -1,6 +1,5 @@
 FROM ghcr.io/azuracast/azuracast:stable
 
-# Configurações de ambiente (todas as envs necessárias)
 ENV INIT_REPO=false \
     AZURACAST_DC_MODE=true \
     AZURACAST_STANDALONE=true \
@@ -18,8 +17,11 @@ ENV INIT_REPO=false \
     WEB_PORT=10000 \
     AZURACAST_HTTP_PORT=10000
 
-# Expor a porta que o Railway usará
+# Remove o virtual host default (evita erro de link simbólico duplicado)
+RUN rm -f /etc/nginx/sites-enabled/default.vhost || true
+
+# Expor porta esperada pelo Railway
 EXPOSE 10000
 
-# Comando padrão de inicialização
+# Comando de inicialização
 CMD ["/usr/local/bin/my_init"]
