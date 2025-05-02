@@ -1,17 +1,5 @@
 services:
   - type: web
-    name: azuracast-proxy
-    env: docker
-    plan: free
-    autoDeploy: true
-    envVars:
-      - key: PORT
-        value: 80
-    envVars:
-      - key: AZURACAST_INTERNAL_URL
-        value: http://azuracast:80
-
-  - type: web
     name: azuracast
     env: docker
     plan: free
@@ -19,3 +7,4 @@ services:
     envVars:
       - key: PORT
         value: 80
+
