@@ -19,7 +19,7 @@ ENV INIT_REPO=false \
 RUN sed -i 's/listen 127.0.0.1:80;/listen 0.0.0.0:80;/g' /etc/nginx/sites-available/azuracast.conf || true
 
 # Garante que o MariaDB escute corretamente (sem sobrescrever my.cnf direto!)
-RUN echo -e "[mysqld]\nport=3306\nbind-address=127.0.0.1" > /etc/mysql/conf.d/network.cnf
+RUN printf "[mysqld]\nport=3306\nbind-address=127.0.0.1\n" | tee /etc/mysql/conf.d/network.cnf > /dev/null
 
 # Evita erro de symlink duplicado do nginx
 RUN rm -f /etc/nginx/sites-enabled/default.vhost
